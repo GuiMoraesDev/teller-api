@@ -1,50 +1,65 @@
-import supabaseClient from "../../../shared/providers/supabase/client";
-import { User } from "../dtos/users";
-import TokenProvider from "../providers/TokenProvider";
+import bcrypt from 'bcryptjs';
+
+import { User } from '../dtos/users';
+
+import TokenProvider from '../providers/TokenProvider';
+
+import supabaseClient from '../../../shared/providers/supabase/client';
 
 interface Request {
-  email: string;
+	email: string
+	password: string
 }
 
 interface Response {
-  user: User;
-  token: string;
+	user: User
+	token: string
 }
 
 class AuthenticateUserService {
-  private tokenProvider = new TokenProvider();
-  private supabaseClient = supabaseClient;
+	private readonly tokenProvider = new TokenProvider();
+	private readonly supabaseClient = supabaseClient;
 
-  public async execute({ email }: Request): Promise<Response> {
-    const user = await this.getUser(email);
+	public async execute({ email, password }: Request): Promise<Response> {
+		const user = await this.getUser(email);
 
-    const token = this.getUserToken(user);
+		if (!user?.password) {
+			throw new Error('email or password is not valid');
+		}
 
-    if (!token) throw new Error("Error trying to create user token");
+		const isPassValid = await bcrypt.compare(password, user.password);
 
-    return {
-      user,
-      token,
-    };
-  }
+		console.log({ password, user: user.password, isPassValid });
 
-  private getUserToken(user: User): string | null {
-    const token = this.tokenProvider.generateToken({}, user.id);
+		if (!isPassValid) {
+			throw new Error('email or password is not valid');
+		}
 
-    return token;
-  }
+		const token = this.getUserToken(user);
 
-  private async getUser(email: string) {
-    const result = await this.supabaseClient
-      .from<User>("Users")
-      .select(`id, email, first_name, last_name`)
-      .eq("email", email)
-      .single();
-    
-    if (!result.data) throw new Error("User not found.");
+		if (!token) throw new Error('Error trying to create user token');
 
-    return result.data;
-  }
+		return {
+			user,
+			token,
+		};
+	}
+
+	private getUserToken(user: User): string | null {
+		const token = this.tokenProvider.generateToken({}, user.id);
+
+		return token;
+	}
+
+	private async getUser(email: string): Promise<User | null> {
+		const result = await this.supabaseClient
+			.from<User>('Users')
+			.select(`id, email, first_name, last_name, password`)
+			.eq('email', email)
+			.single();
+
+		return result.data;
+	}
 }
 
 export default AuthenticateUserService;

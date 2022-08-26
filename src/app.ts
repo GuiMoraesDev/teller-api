@@ -8,4 +8,6 @@ app.use(express.json());
 
 routes(app);
 
+app.use(express.static('./public'));
+
 export default app;

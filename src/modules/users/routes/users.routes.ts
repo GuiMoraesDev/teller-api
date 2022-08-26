@@ -1,12 +1,22 @@
-import { Router, Request, Response } from "express";
-import SessionsController from "../controllers/SessionsController";
+import { Router } from "express";
+import { celebrate, Joi, Segments } from "celebrate";
 
-const route = Router();
+import UsersController from "../controllers/UsersController";
+const userController = new UsersController();
 
-route.post("/sessions", (req: Request, res: Response) => {
-  const sessionController = new SessionsController();
+const usersRouter = Router();
 
-  const session = sessionController.create(req, res);
-});
+usersRouter.post(
+  "/new",
+  celebrate({
+    [Segments.BODY]: {
+      first_name: Joi.string().required(),
+      last_name: Joi.string().required(),
+      email: Joi.string().email().required(),
+      password: Joi.string().required(),
+    },
+  }),
+  userController.create
+);
 
-export default route;
+export default usersRouter;
