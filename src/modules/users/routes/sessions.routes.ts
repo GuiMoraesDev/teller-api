@@ -2,7 +2,9 @@ import { Router } from "express";
 import { celebrate, Joi, Segments } from "celebrate";
 
 import SessionsController from "../controllers/SessionsController";
+import GoogleSessionsController from "../controllers/GoogleSessionsController";
 const sessionController = new SessionsController();
+const googleSessionsController = new GoogleSessionsController();
 
 const sessionsRouter = Router();
 
@@ -15,6 +17,16 @@ sessionsRouter.post(
     },
   }),
   sessionController.create
+);
+
+sessionsRouter.post(
+  "/google",
+  celebrate({
+    [Segments.BODY]: {
+      credential: Joi.string().required(),
+    },
+  }),
+  googleSessionsController.create
 );
 
 export default sessionsRouter;
