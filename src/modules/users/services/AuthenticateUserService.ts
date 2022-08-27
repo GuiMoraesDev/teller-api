@@ -29,8 +29,6 @@ class AuthenticateUserService {
 
 		const isPassValid = await bcrypt.compare(password, user.password);
 
-		console.log({ password, user: user.password, isPassValid });
-
 		if (!isPassValid) {
 			throw new Error('email or password is not valid');
 		}

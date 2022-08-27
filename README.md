@@ -1,6 +1,6 @@
 # Teller
 
-<img src="https://raw.githubusercontent.com/GuiMoraesDev/teller/main/public/img/Icon.png" alt="react logo" height="100px" align="right" />
+<img src="https://raw.githubusercontent.com/GuiMoraesDev/teller-api/main/public/img/Icon.png" alt="Teller logo" height="100px" align="right" />
 
 [![@supabase/supabase-js](https://img.shields.io/badge/supabase--js-%5E1.35.6-3ECF8E?logo=Supabase)](https://@supabase/supabase-js-http.com/)
 [![celebrate](https://img.shields.io/badge/celebrate-%5E15.0.1-white)](https://nextjs.org/)
@@ -51,8 +51,38 @@ yarn dev
 yarn build
 ```
 
+## Project Folders Structure 👷
+
+```code
+.
+├── public
+├── src
+│    ├── @types
+│    ├── config
+│    ├── modules
+│    │    └── [module_folder]
+│    │         ├── controllers
+│    │         ├── dtos
+│    │         ├── providers
+│    │         ├── routes
+│    │         └── services
+│    └── shared
+│         └── providers
+│              └── supabase
+└── [...]
+```
+
 ## Project Linters 🧹
 
 - [ESLint](https://eslint.org/)
 - [Prettier](https://prettier.io/)
 - [EditorConfig](https://editorconfig.org/)
+
+## Project Maintenance 👨‍🔧
+
+- Project is using Angular Commits Guide Line, for more information, click on this [link](https://github.com/angular/angular/blob/master/CONTRIBUTING.md#-commit-message-format).
+
+## How this project can grow? 🪴
+
+- Tests, tests and more tests
+- Apply internationalization would be a good option to turn it more world wide spread.

@@ -21,8 +21,6 @@ class TokenProvider {
 	public validateToken(token: string): string | JwtPayload {
 		const result = verify(token, this.defaultAuthSecret);
 
-		console.log('result', result);
-
 		return result;
 	}
 }
