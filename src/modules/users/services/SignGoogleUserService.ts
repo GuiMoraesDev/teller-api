@@ -6,8 +6,24 @@ import TokenProvider from '../providers/TokenProvider';
 
 import supabaseClient from '../../../shared/providers/supabase/client';
 
-import { GoogleUserResponse } from '../../../@types';
 import CreateNewUserService from './CreateNewUserService';
+
+interface GoogleUserResponse {
+	aud: string;
+	azp: string;
+	email: string;
+	email_verified: true;
+	exp: number;
+	family_name: string;
+	given_name: string;
+	iat: number;
+	iss: string;
+	jti: string;
+	name: string;
+	nbf: number;
+	picture: string;
+	sub: string;
+}
 
 interface Request {
 	credential: string;
