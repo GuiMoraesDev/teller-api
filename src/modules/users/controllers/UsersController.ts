@@ -8,7 +8,7 @@ export default class UsersController {
 		const { first_name, last_name, email, password } = request.body;
 
 		try {
-			const user = await createNewUserService.execute({
+			const { user, token } = await createNewUserService.execute({
 				first_name,
 				last_name,
 				email,
@@ -18,7 +18,7 @@ export default class UsersController {
 				avatar_url: null,
 			});
 
-			response.status(200).json({ user });
+			response.status(200).json({ user, token });
 		} catch (error: any) {
 			response.status(400).json({ message: error.message });
 		}
