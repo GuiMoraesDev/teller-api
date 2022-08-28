@@ -7,16 +7,16 @@ import TokenProvider from '../providers/TokenProvider';
 import supabaseClient from '../../../shared/providers/supabase/client';
 
 interface Request {
-	email: string
-	password: string
+	email: string;
+	password: string;
 }
 
 interface Response {
-	user: User
-	token: string
+	user: User;
+	token: string;
 }
 
-class AuthenticateUserService {
+export default class AuthenticateUserService {
 	private readonly tokenProvider = new TokenProvider();
 	private readonly supabaseClient = supabaseClient;
 
@@ -32,6 +32,8 @@ class AuthenticateUserService {
 		if (!isPassValid) {
 			throw new Error('email or password is not valid');
 		}
+
+		delete user.password;
 
 		const token = this.getUserToken(user);
 
@@ -52,12 +54,11 @@ class AuthenticateUserService {
 	private async getUser(email: string): Promise<User | null> {
 		const result = await this.supabaseClient
 			.from<User>('Users')
-			.select(`id, email, first_name, last_name, password`)
+			.select('id,first_name,last_name,email,email_verified,password,avatar_url')
 			.eq('email', email)
+			.eq('is_social_login', false)
 			.single();
 
 		return result.data;
 	}
 }
-
-export default AuthenticateUserService;

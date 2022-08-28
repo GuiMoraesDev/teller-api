@@ -1,7 +1,5 @@
 import { Request, Response } from "express";
 
-import { User } from "../dtos/users";
-
 import AuthenticateUserService from "../services/AuthenticateUserService";
 
 export default class SessionsController {
@@ -15,14 +13,7 @@ export default class SessionsController {
         password
       });
 
-      const user_authenticated: User = {
-        id: user.id,
-        first_name: user.first_name,
-        last_name: user.last_name,
-        email: user.email,
-      };
-
-      response.status(200).json({ user: user_authenticated, token });
+      response.status(200).json({ user, token });
     } catch (error: any) {
       response.status(401).json({ message: error.message });
     }

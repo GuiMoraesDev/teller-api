@@ -2,10 +2,8 @@ import { Router } from 'express';
 import { celebrate, Joi, Segments } from 'celebrate';
 
 import UsersController from '../controllers/UsersController';
-import UsersGoogleController from '../controllers/UsersGoogleController';
 
 const userController = new UsersController();
-const usersGoogleController = new UsersGoogleController();
 
 const usersRouter = Router();
 
@@ -20,16 +18,6 @@ usersRouter.post(
 		},
 	}),
 	userController.create
-);
-
-usersRouter.post(
-	'/new-google',
-	celebrate({
-		[Segments.BODY]: {
-			credential: Joi.string().required(),
-		},
-	}),
-	usersGoogleController.create
 );
 
 export default usersRouter;
