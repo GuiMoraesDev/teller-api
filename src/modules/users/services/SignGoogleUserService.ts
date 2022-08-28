@@ -45,7 +45,7 @@ export default class SignGoogleUserService {
 		let user = await this.getUser(email);
 
 		if (!user) {
-			user = await this.createNewUserService.execute({ email, ...userProps });
+			user = await this.createNewUser({ email, ...userProps });
 		}
 
 		const token = this.getUserToken(user);
@@ -86,6 +86,20 @@ export default class SignGoogleUserService {
 			.eq('email', email)
 			.eq('is_social_login', true)
 			.single();
+
+		return result.data;
+	}
+
+	private async createNewUser(userProps: UserParams): Promise<User> {
+		const result = await this.supabaseClient
+			.from<User>('Users')
+			.insert(userProps)
+			.select('id,first_name,last_name,email,email_verified,password,avatar_url')
+			.single();
+
+		if (!result.data) {
+			throw new Error('Something went wrong while user creation');
+		}
 
 		return result.data;
 	}
