@@ -8,6 +8,7 @@
   "scripts": {
     "dev": "ts-node-dev --inspect --transpile-only --ignore-watch node_modules src/server.ts",
     "build": "tsc --outDir ./build",
+    "start": "node ./build/server.js",
     "prepare": "husky install"
   },
   "dependencies": {
