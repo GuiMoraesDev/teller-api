@@ -81,7 +81,7 @@ export default class SignGoogleUserService {
 
 	private async getUser(email: string): Promise<User | null> {
 		const result = await this.supabaseClient
-			.from<User>('Users')
+			.from<User>('users')
 			.select('id,first_name,last_name,email,email_verified,avatar_url')
 			.eq('email', email)
 			.eq('is_social_login', true)
@@ -92,7 +92,7 @@ export default class SignGoogleUserService {
 
 	private async createNewUser(userProps: UserParams): Promise<User> {
 		const result = await this.supabaseClient
-			.from<User>('Users')
+			.from<User>('users')
 			.insert(userProps)
 			.select('id,first_name,last_name,email,email_verified,password,avatar_url')
 			.single();

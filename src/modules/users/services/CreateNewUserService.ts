@@ -29,7 +29,7 @@ export default class CreateNewUserService {
 
 	private async getUser(email: string): Promise<boolean> {
 		const result = await this.supabaseClient
-			.from<User>('Users')
+			.from<User>('users')
 			.select(`id`)
 			.eq('email', email)
 			.single();
@@ -47,7 +47,7 @@ export default class CreateNewUserService {
 		const encryptedPass = await bcrypt.hash(password, 8);
 
 		const result = await this.supabaseClient
-			.from<User>('Users')
+			.from<User>('users')
 			.insert({ ...userProps, password: encryptedPass })
 			.select('id,first_name,last_name,email,email_verified,password,avatar_url')
 			.single();

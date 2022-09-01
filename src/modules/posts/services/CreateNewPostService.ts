@@ -17,7 +17,7 @@ export default class CreateNewPostService {
 
 	private async createNewPost(postProps: PostParams): Promise<Post> {
 		const result = await this.supabaseClient
-			.from<Post>('Posts')
+			.from<Post>('posts')
 			.insert(postProps)
 			.select('*')
 			.single();
