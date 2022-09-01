@@ -8,7 +8,7 @@ interface Params {
 }
 
 interface AllPostsProps extends Post {
-	Users: {
+	users: {
 		id: User['id'];
 		first_name: User['first_name'];
 		last_name: User['last_name'];
@@ -33,14 +33,14 @@ export default class ListAllPostsService {
 		author_id: PostParams['author_id']
 	): Promise<AllPostsProps[]> {
 		const result = await this.supabaseClient
-			.from<AllPostsProps>('Posts')
+			.from<AllPostsProps>('posts')
 			.select(
 				`
 			id,
 			body,
 			created_at,
 			author_id,
-			Users (
+			users (
 				id,
 				first_name,
 				last_name,
