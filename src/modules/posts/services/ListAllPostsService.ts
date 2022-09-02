@@ -50,9 +50,11 @@ export default class ListAllPostsService {
 					.from<AllPostsProps>('posts')
 					.select(selectQuery)
 					.eq('author_id', author_id)
+					.order('created_at', { ascending: false })
 			: await this.supabaseClient
 					.from<AllPostsProps>('posts')
-					.select(selectQuery);
+					.select(selectQuery)
+					.order('created_at', { ascending: false });
 
 		if (!result.data) {
 			throw new Error('Something went wrong while post listing');
