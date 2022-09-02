@@ -8,6 +8,12 @@ const postsController = new PostsController();
 const postsRouter = Router();
 
 postsRouter.get(
+	'/',
+	ensureAuthenticated,
+	postsController.list
+);
+
+postsRouter.get(
 	'/:author_id',
 	celebrate({
 		[Segments.PARAMS]: {

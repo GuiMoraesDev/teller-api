@@ -30,25 +30,29 @@ export default class ListAllPostsService {
 	}
 
 	private async listAllPost(
-		author_id: PostParams['author_id']
+		author_id?: PostParams['author_id']
 	): Promise<AllPostsProps[]> {
-		const result = await this.supabaseClient
-			.from<AllPostsProps>('posts')
-			.select(
-				`
+		const selectQuery = `
+		id,
+		body,
+		created_at,
+		author_id,
+		users (
 			id,
-			body,
-			created_at,
-			author_id,
-			users (
-				id,
-				first_name,
-				last_name,
-				avatar_url
-			)
-			`
-			)
-			.eq('author_id', author_id);
+			first_name,
+			last_name,
+			avatar_url
+		)
+		`;
+
+		const result = author_id
+			? await this.supabaseClient
+					.from<AllPostsProps>('posts')
+					.select(selectQuery)
+					.eq('author_id', author_id)
+			: await this.supabaseClient
+					.from<AllPostsProps>('posts')
+					.select(selectQuery);
 
 		if (!result.data) {
 			throw new Error('Something went wrong while post listing');
